@@ -1,6 +1,10 @@
 #!flask/bin/python
 from flask import request, abort, Flask, jsonify
 import subprocess
+import ssl
+
+context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+context.load_cert_chain('tls/self-signed.crt', 'tls/private.key')
 
 submit_post = Flask(__name__)
 
@@ -29,5 +33,5 @@ def create_task():
     return jsonify({'tasks': task}), 201
 
 if __name__ == '__main__':
-    submit_post.run(host='172.22.132.19', port=5000, debug=True)
+    submit_post.run(host='172.22.132.19', port=5000, ssl_context=context, debug=True)
 
